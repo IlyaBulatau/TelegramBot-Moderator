@@ -21,9 +21,12 @@ async def join_user(message: Message, bot: Bot):
     """
     отслеживает добавление участника в группу
     """
-    user_id = message.from_user.id
-    orm.add_user_to_db(user_id, User)
-    await message.reply(text=f'У нас новый участник\n\nПривет {message.from_user.first_name}')
+    user_id = message.new_chat_members[0].id
+    if orm.is_user_in_db(user_id, User):
+        return
+    else:
+        orm.add_user_to_db(user_id, User)
+        await message.reply(text=f'У нас новый участник\n\nПривет @{message.new_chat_members[0].username}')
 
 # @router.message()
 # async def other_msg(message: Message):
