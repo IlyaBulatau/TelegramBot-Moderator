@@ -5,16 +5,8 @@ async def menu_commands(bot: Bot):
 
     commands = [
         BotCommand(
-        command='help',
-        description='Справка'
-        ),
-        BotCommand(
-        command='contact',
-        description='Написать разработчику'
-        ),
-        BotCommand(
-        command='rules',
-        description='Правила чата'
+        command='upstatus',
+        description='Получение админки'
         )
     ]
 

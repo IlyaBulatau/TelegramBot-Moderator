@@ -1,4 +1,0 @@
-COMMANDS = {
-    'start': 'start'
-}
-

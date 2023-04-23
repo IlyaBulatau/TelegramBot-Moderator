@@ -22,6 +22,10 @@ class SwearWorldControlMiddleware(BaseMiddleware):
     Проверка сообщений на наличие ругательств
     """
     async def __call__(self, handler, event: types.Message, data):
+        # проверка на приватность чата
+        if event.chat.type == 'private':
+            return await handler(event, data)
+
         # если это создатель чата пропускает сообщения
         user = await data['bot'].get_chat_member(event.chat.id, event.from_user.id)
         if user.status == statuses[0]:
@@ -33,6 +37,29 @@ class SwearWorldControlMiddleware(BaseMiddleware):
             await event.delete()
 
         return await handler(event, data)
+    
+class EntitiesControlMiddleware(BaseMiddleware):
+    """
+    Проверка сообщений на ссылки, упоминания, хэштеги
+    можно модефицировать, например разрешить упоминать участников группы
+    """
+
+    async def __call__(self, handler, event: types.Message, data):
+        # проверка на приватность чата
+        if event.chat.type == 'private':
+            return await handler(event, data)
+
+        # проверка на статус
+        user = await data['bot'].get_chat_member(event.chat.id, event.from_user.id)
+        if user.status in statuses:
+            return await handler(event, data)
+        
+        if event.entities:
+            await event.delete()
+
+        return await handler(event, data)
+        
+
 
 class FloodControlMiddleware(BaseMiddleware):
     """

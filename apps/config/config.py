@@ -6,4 +6,8 @@ env.read_env()
 TOKEN=env("TOKEN")
 DB_LOGIN=env("DB_LOGIN")
 DB_PASSWORD=env("DB_PASSWORD")
-SWEAR = env('SWEAR')
+PAYMENTS=env("PAYMENTS")
+try:
+    SWEAR = env('SWEAR')
+except:
+    SWEAR = ''
